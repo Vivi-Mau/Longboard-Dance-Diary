@@ -19,6 +19,8 @@ export default defineConfig({
     },
   },
 
+  srcExclude: ['data/tricks/**'],
+
   appearance: 'dark',
 
   head: [
