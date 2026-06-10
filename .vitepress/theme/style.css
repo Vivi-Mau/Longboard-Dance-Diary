@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth accordion animation using Radix's CSS custom property */
+@layer utilities {
+  .animate-slideDown {
+    animation: slideDown 220ms ease-out;
+  }
+  .animate-slideUp {
+    animation: slideUp 180ms ease-in;
+  }
+}
+
+/* Remove VitePress default focus ring in favour of our own */
+:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+}

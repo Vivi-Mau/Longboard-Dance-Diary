@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 490" fill="none">
+
+    <!-- Board deck: nose at top, tail at bottom, slight waist in center -->
+    <path
+            d="M100,25
+       C122,25 155,62 155,107
+       C155,168 143,207 143,242
+       C143,277 155,314 155,377
+       C155,420 122,457 100,457
+       C 78,457  45,420  45,377
+       C 45,314  57,277  57,242
+       C 57,207  45,168  45,107
+       C 45, 62  78, 25 100, 25
+       Z"
+            stroke="#FF6B00" stroke-width="2.5" stroke-linejoin="round"
+    />
+
+    <!-- Nose wheels -->
+    <circle cx="30" cy="109" r="10" stroke="#FF6B00" stroke-width="2"/>
+    <circle cx="170" cy="109" r="10" stroke="#FF6B00" stroke-width="2"/>
+
+    <!-- Tail wheels -->
+    <circle cx="30" cy="379" r="10" stroke="#FF6B00" stroke-width="2"/>
+    <circle cx="170" cy="379" r="10" stroke="#FF6B00" stroke-width="2"/>
+
+    <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="10" refY="4" orient="auto">
+            <polygon points="12 0, 0 4, 8 7" fill="#FF6B00"/>
+        </marker>
+    </defs>
+
+    <!-- PETER PAN: feet crossed in the middle of the board -->
+    <!-- Front foot: on left side, toes pointing in driving direction -->
+    <ellipse
+            cx="40" cy="210"
+            rx="28" ry="11"
+            stroke="#FF6B00" stroke-width="2.5"
+            transform="rotate(-80, 100, 180)"
+    />
+    <!-- Back foot: crosses over to the right side -->
+    <ellipse
+            cx="40" cy="210"
+            rx="28" ry="11"
+            stroke="#FF6B00" stroke-width="2.5"
+            transform="rotate(80, 100, 300)"
+    />
+
+    <!-- Arrow showing back foot crossing over to the right side -->
+    <path
+            d="M 72,248 C 88,212 128,212 150,234"
+            stroke="#FF6B00" stroke-width="1.5" fill="none"
+            stroke-dasharray="4,3"
+            marker-start="url(#arr)"
+    />
+
+</svg>
