@@ -4,8 +4,9 @@ import { AccordionRoot } from 'radix-vue'
 import { Icon } from '@iconify/vue'
 import DifficultyFilter from './DifficultyFilter.vue'
 import TrickAccordionItem from './TrickAccordionItem.vue'
-import type { TrickCategory, TrickCategory as TC, Difficulty, Locale } from '../data/tricks'
-import { useTrickProgress } from '../composables/useTrickProgress'
+import TrickFamilyAccordionItem from './TrickFamilyAccordionItem.vue'
+import type { TrickCategory, TrickCategory as TC, Difficulty, Locale } from '@/data/tricks'
+import { useTrickProgress } from '@/composables/useTrickProgress'
 
 type FilterValue = 'all' | Difficulty
 
@@ -21,18 +22,31 @@ const activeFilter = ref<FilterValue>('all')
 
 const isSearchMode = computed(() => props.searchQuery.trim().length > 0)
 
+const displayedFamilies = computed(() => {
+  if (isSearchMode.value) return []
+  return props.category.families
+    .map(f => ({
+      ...f,
+      tricks: activeFilter.value === 'all'
+        ? f.tricks
+        : f.tricks.filter(t => t.difficulty === activeFilter.value),
+    }))
+    .filter(f => f.tricks.length > 0)
+})
+
 const displayedTricks = computed(() => {
   if (isSearchMode.value) {
-    const q = props.searchQuery.toLowerCase()
-    return props.allCategories.flatMap(cat =>
-      cat.tricks.filter(t =>
-        t.name.toLowerCase().includes(q) ||
-        t.description[props.locale].toLowerCase().includes(q) ||
-        t.steps[props.locale].some(s => s.toLowerCase().includes(q)),
-      ),
+    const q = props.searchQuery.toLowerCase().replace(/-/g, ' ')
+    const normalize = (s: string) => s.toLowerCase().replace(/-/g, ' ')
+    return props.allCategories.flatMap(cat => [
+      ...cat.tricks,
+      ...cat.families.flatMap(f => f.tricks),
+    ]).filter(t =>
+      normalize(t.name).includes(q) ||
+      normalize(t.description[props.locale]).includes(q) ||
+      t.steps[props.locale].some(s => normalize(s).includes(q)),
     )
   }
-
   let tricks = props.category.tricks
   if (activeFilter.value !== 'all') {
     tricks = tricks.filter(t => t.difficulty === activeFilter.value)
@@ -41,15 +55,22 @@ const displayedTricks = computed(() => {
 })
 
 const progress = computed(() => {
-  const tricks = props.category.tricks
-  const done = tricks.filter(t => checkedTricks.value.has(t.id)).length
-  return { done, total: tricks.length, pct: tricks.length > 0 ? Math.round((done / tricks.length) * 100) : 0 }
+  const allTricks = [
+    ...props.category.tricks,
+    ...props.category.families.flatMap(f => f.tricks),
+  ]
+  const done = allTricks.filter(t => checkedTricks.value.has(t.id)).length
+  return { done, total: allTricks.length, pct: allTricks.length > 0 ? Math.round((done / allTricks.length) * 100) : 0 }
 })
 
 const title = computed(() =>
   isSearchMode.value
     ? (props.locale === 'de' ? `Ergebnisse für „${props.searchQuery}"` : `Results for "${props.searchQuery}"`)
     : props.category.name[props.locale],
+)
+
+const isEmpty = computed(() =>
+  displayedFamilies.value.length === 0 && displayedTricks.value.length === 0,
 )
 </script>
 
@@ -84,8 +105,14 @@ const title = computed(() =>
 
     <!-- Trick list -->
     <div class="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
-      <template v-if="displayedTricks.length > 0">
+      <template v-if="!isEmpty">
         <AccordionRoot type="single" collapsible>
+          <TrickFamilyAccordionItem
+            v-for="family in displayedFamilies"
+            :key="family.id"
+            :family="family"
+            :locale="locale"
+          />
           <TrickAccordionItem
             v-for="trick in displayedTricks"
             :key="trick.id"

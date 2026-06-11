@@ -4,7 +4,6 @@ export default {
     './.vitepress/**/*.{vue,ts,js}',
     './components/**/*.vue',
     './composables/**/*.ts',
-    './**/*.md',
   ],
   darkMode: 'class',
   theme: {

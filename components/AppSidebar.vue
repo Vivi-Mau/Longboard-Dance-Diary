@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import type { TrickCategory, Locale } from '../data/tricks'
-import { useTrickProgress } from '../composables/useTrickProgress'
+import type { TrickCategory, Locale } from '@/data/tricks'
+import { useTrickProgress } from '@/composables/useTrickProgress'
 
 const props = defineProps<{
   collapsed: boolean
@@ -20,8 +20,9 @@ const emit = defineEmits<{
 const { checkedTricks } = useTrickProgress()
 
 function progressFor(cat: TrickCategory) {
-  const done = cat.tricks.filter(t => checkedTricks.value.has(t.id)).length
-  return { done, total: cat.tricks.length }
+  const all = [...cat.tricks, ...cat.families.flatMap(f => f.tricks)]
+  const done = all.filter(t => checkedTricks.value.has(t.id)).length
+  return { done, total: all.length }
 }
 </script>
 

@@ -9,8 +9,8 @@ import {
   CheckboxIndicator,
 } from 'radix-vue'
 import { Icon } from '@iconify/vue'
-import type { Trick, Locale } from '../data/tricks'
-import { useTrickProgress } from '../composables/useTrickProgress'
+import type { Trick, Locale } from '@/data/tricks'
+import { useTrickProgress } from '@/composables/useTrickProgress'
 
 const props = defineProps<{
   trick: Trick
@@ -67,7 +67,7 @@ const diff = computed(() => difficultyMap[props.trick.difficulty])
       >
         <span
           class="flex-1 text-sm font-medium truncate transition-colors"
-          :class="checked ? 'line-through text-gray-600' : 'text-gray-100 group-hover:text-orange-300'"
+          :class="checked ? 'text-gray-600' : 'text-gray-100 group-hover:text-orange-300'"
         >
           {{ trick.name }}
         </span>

@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from 'radix-vue'
-import type { Locale } from '../data/tricks'
+import type { Locale } from '@/data/tricks'
 
 const props = defineProps<{
   locale: Locale
@@ -42,8 +42,8 @@ const current = () => languages.find(l => l.code === props.locale)!
           class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-gray-700 hover:border-orange-500 transition-colors text-gray-300 hover:text-orange-400"
         >
           <Icon :icon="current().flag" class="w-5 h-5 rounded-full" />
-          <span class="text-sm font-semibold uppercase">{{ current().code }}</span>
-          <Icon icon="lucide:chevron-down" class="w-3 h-3 opacity-60" />
+          <span class="hidden sm:inline text-sm font-semibold uppercase">{{ current().code }}</span>
+          <Icon icon="lucide:chevron-down" class="hidden sm:inline w-3 h-3 opacity-60" />
         </DropdownMenuTrigger>
 
         <DropdownMenuContent

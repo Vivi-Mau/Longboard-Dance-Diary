@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   title: 'Longboard Dance Diary',
@@ -29,4 +30,10 @@ export default defineConfig({
   ],
 
   themeConfig: {},
+
+  vite: {
+    resolve: {
+      alias: { '@': fileURLToPath(new URL('..', import.meta.url)) },
+    },
+  },
 })

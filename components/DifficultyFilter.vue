@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Difficulty, Locale } from '../data/tricks'
+import type { Difficulty, Locale } from '@/data/tricks'
 
 type FilterValue = 'all' | Difficulty
 

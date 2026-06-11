@@ -39,5 +39,16 @@ export function useTrickProgress() {
     return checkedTricks.value.has(trickId)
   }
 
-  return { checkedTricks, toggle, isChecked }
+  function toggleAll(trickIds: string[]) {
+    const next = new Set(checkedTricks.value)
+    const allChecked = trickIds.every(id => next.has(id))
+    if (allChecked) {
+      trickIds.forEach(id => next.delete(id))
+    } else {
+      trickIds.forEach(id => next.add(id))
+    }
+    checkedTricks.value = next
+  }
+
+  return { checkedTricks, toggle, isChecked, toggleAll }
 }

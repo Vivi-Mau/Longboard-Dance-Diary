@@ -4,8 +4,8 @@ import { useData, useRouter } from 'vitepress'
 import AppHeader from '../../components/AppHeader.vue'
 import AppSidebar from '../../components/AppSidebar.vue'
 import TrickList from '../../components/TrickList.vue'
-import { trickCategories } from '../../data/tricks'
-import type { Locale } from '../../data/tricks'
+import { trickCategories } from '@/data/tricks'
+import type { Locale } from '@/data/tricks'
 
 const { lang } = useData()
 const router = useRouter()

@@ -1,5 +1,5 @@
 ---
-id: freestyle-kickflip
+id: kickflip
 name: Kickflip
 difficulty: advanced
 ---
