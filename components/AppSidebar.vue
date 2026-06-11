@@ -8,13 +8,11 @@ const props = defineProps<{
   categories: TrickCategory[]
   activeCategory: string
   locale: Locale
-  searchQuery: string
 }>()
 
 const emit = defineEmits<{
   select: [id: string]
   toggle: []
-  'update:searchQuery': [value: string]
 }>()
 
 const { checkedTricks } = useTrickProgress()
@@ -31,20 +29,6 @@ function progressFor(cat: TrickCategory) {
     class="shrink-0 bg-gray-900 border-r border-gray-800 flex flex-col transition-all duration-300 overflow-hidden"
     :class="collapsed ? 'w-14' : 'w-60'"
   >
-    <!-- Search (expanded only) -->
-    <div class="p-3 pb-2" :class="collapsed ? 'hidden' : ''">
-      <div class="relative">
-        <Icon icon="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
-        <input
-          :value="searchQuery"
-          type="search"
-          :placeholder="locale === 'de' ? 'Tricks suchen…' : 'Search tricks…'"
-          class="w-full bg-gray-950 border border-gray-700 rounded-xl pl-9 pr-4 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
-          @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
-        />
-      </div>
-    </div>
-
     <!-- Category nav -->
     <nav class="flex-1 p-2 space-y-1 overflow-y-auto">
       <button

@@ -98,8 +98,8 @@ const isEmpty = computed(() =>
       </div>
     </div>
 
-    <!-- Difficulty filter (hidden in search mode) -->
-    <div v-if="!isSearchMode" class="mb-4">
+    <!-- Difficulty filter -->
+    <div class="mb-4">
       <DifficultyFilter v-model="activeFilter" :locale="locale" />
     </div>
 
@@ -111,6 +111,7 @@ const isEmpty = computed(() =>
             v-for="family in displayedFamilies"
             :key="family.id"
             :family="family"
+            :all-trick-ids="category.families.find(f => f.id === family.id)!.tricks.map(t => t.id)"
             :locale="locale"
           />
           <TrickAccordionItem

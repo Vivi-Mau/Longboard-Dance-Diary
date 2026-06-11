@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useData, useRouter } from 'vitepress'
+import { Icon } from '@iconify/vue'
 import AppHeader from '../../components/AppHeader.vue'
 import AppSidebar from '../../components/AppSidebar.vue'
 import TrickList from '../../components/TrickList.vue'
@@ -14,13 +15,9 @@ const locale = computed<Locale>(() =>
   lang.value?.startsWith('de') ? 'de' : 'en',
 )
 
-const sidebarCollapsed = ref(false)
+const sidebarCollapsed = ref(true)
 const activeCategory = ref(trickCategories[0].id)
 const searchQuery = ref('')
-
-onMounted(() => {
-  sidebarCollapsed.value = window.innerWidth < 1024
-})
 
 const activeCategory$ = computed(
   () => trickCategories.find(c => c.id === activeCategory.value) ?? trickCategories[0],
@@ -48,13 +45,24 @@ function selectCategory(id: string) {
         :categories="trickCategories"
         :active-category="activeCategory"
         :locale="locale"
-        :search-query="searchQuery"
         @select="selectCategory"
         @toggle="sidebarCollapsed = !sidebarCollapsed"
-        @update:search-query="searchQuery = $event"
       />
 
-      <main class="flex-1 overflow-y-auto p-4 md:p-8">
+      <main class="flex-1 overflow-y-auto p-2 md:p-2">
+        <!-- Search bar -->
+        <div class="px-2 py-4">
+          <div class="relative max-w-2xl mx-auto">
+            <Icon icon="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+            <input
+                :value="searchQuery"
+                type="search"
+                :placeholder="locale === 'de' ? 'Tricks suchen…' : 'Search tricks…'"
+                class="w-full bg-gray-900 border border-gray-700 rounded-xl pl-9 pr-4 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                @input="searchQuery = ($event.target as HTMLInputElement).value"
+            />
+          </div>
+        </div>
         <TrickList
           :category="activeCategory$"
           :all-categories="trickCategories"

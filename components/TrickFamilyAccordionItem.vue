@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import {
   AccordionItem,
   AccordionHeader,
   AccordionTrigger,
   AccordionContent,
   AccordionRoot,
+  CheckboxRoot,
+  CheckboxIndicator,
 } from 'radix-vue'
-import { computed } from 'vue'
-import { CheckboxRoot, CheckboxIndicator } from 'radix-vue'
 import { Icon } from '@iconify/vue'
 import type { TrickFamily, Locale } from '@/data/tricks'
 import TrickAccordionItem from './TrickAccordionItem.vue'
@@ -15,17 +16,16 @@ import { useTrickProgress } from '@/composables/useTrickProgress'
 
 const props = defineProps<{
   family: TrickFamily
+  allTrickIds: string[]
   locale: Locale
 }>()
 
 const { checkedTricks, toggleAll } = useTrickProgress()
 
 const familyState = computed<boolean | 'indeterminate'>(() => {
-  checkedTricks.value
-  const ids = props.family.tricks.map(t => t.id)
-  const done = ids.filter(id => checkedTricks.value.has(id)).length
+  const done = props.allTrickIds.filter(id => checkedTricks.value.has(id)).length
   if (done === 0) return false
-  if (done === ids.length) return true
+  if (done === props.allTrickIds.length) return true
   return 'indeterminate'
 })
 </script>
@@ -43,7 +43,7 @@ const familyState = computed<boolean | 'indeterminate'>(() => {
             : familyState === 'indeterminate'
               ? 'bg-orange-500/40 border-orange-500/60'
               : 'bg-transparent border-gray-600 hover:border-orange-400'"
-          @update:checked="toggleAll(family.tricks.map(t => t.id))"
+          @update:checked="toggleAll(allTrickIds)"
         >
           <CheckboxIndicator>
             <Icon

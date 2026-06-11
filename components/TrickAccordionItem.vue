@@ -17,12 +17,9 @@ const props = defineProps<{
   locale: Locale
 }>()
 
-const { isChecked, toggle, checkedTricks } = useTrickProgress()
+const { isChecked, toggle } = useTrickProgress()
 
-const checked = computed(() => {
-  checkedTricks.value // track dependency
-  return isChecked(props.trick.id)
-})
+const checked = computed(() => isChecked(props.trick.id))
 
 const difficultyMap = {
   easy: {
